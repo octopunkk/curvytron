@@ -1,40 +1,57 @@
 import React from "react";
 import Canvas from "./Canvas";
 import { useEffect, useState } from "react";
+let pathP1 = new Path2D();
 
 function App() {
-  const [x, setX] = useState();
-  const [y, setY] = useState();
-  const [prevX, setPrevX] = useState();
-  const [prevY, setPrevY] = useState();
+  let x = 250;
+  let y = 250;
+  let prevX = 250;
+  let prevY = 250;
   useEffect(() => {
     const update = (e) => {
-      setPrevX(x);
-      setPrevY(y);
-      setX(e.x);
-      setY(e.y);
+      handleMovement(e.key);
     };
-    window.addEventListener("mousemove", update);
-    window.addEventListener("touchmove", update);
+    window.addEventListener("keydown", update);
     return () => {
-      window.removeEventListener("mousemove", update);
-      window.removeEventListener("touchmove", update);
+      window.removeEventListener("keydown", update);
     };
-  }, [setX, setY]);
-
+  });
   const draw = (ctx, frameCount) => {
     ctx.lineWidth = 10;
+    ctx.strokeStyle = "blue";
     ctx.lineCap = "round";
-    const myPath = new Path2D();
-    // myPath.arc(150, 75, 50, 0, 2 * Math.PI);
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.fillStyle = "red";
-    ctx.fill(myPath);
+    pathP1.moveTo(prevX, prevY);
+    pathP1.lineTo(x, y);
+    ctx.stroke(pathP1);
   };
 
-  return <Canvas draw={draw} x={x} y={y} />;
+  const handleMovement = (dir) => {
+    switch (dir) {
+      case "ArrowRight":
+        prevX = x;
+        prevY = y;
+        x += 10;
+        break;
+      case "ArrowLeft":
+        prevX = x;
+        prevY = y;
+        x -= 10;
+        break;
+      case "ArrowUp":
+        prevX = x;
+        prevY = y;
+        y -= 10;
+        break;
+      case "ArrowDown":
+        prevX = x;
+        prevY = y;
+        y += 10;
+        break;
+    }
+  };
+
+  return <Canvas draw={draw} />;
 }
 
 export default App;
