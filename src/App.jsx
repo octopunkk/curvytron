@@ -2,8 +2,12 @@ import React from "react";
 import Canvas from "./Canvas";
 import { useEffect, useState } from "react";
 let pathP1 = new Path2D();
+let run = true;
+let id = null;
+let a = 0;
 
 function App() {
+  clearInterval(id);
   let x = 250;
   let y = 250;
   let prevX = 250;
@@ -50,6 +54,19 @@ function App() {
         break;
     }
   };
+
+  const move = () => {
+    prevX = x;
+    prevY = y;
+    a += 0.1;
+
+    let cx = 200;
+    let cy = 200;
+    let r = 100;
+    x = cx + r * Math.sin(a);
+    y = cy + r * Math.cos(a);
+  };
+  id = setInterval(move, 100);
 
   return <Canvas draw={draw} />;
 }
