@@ -2,9 +2,8 @@ import React from "react";
 import Canvas from "./Canvas";
 import { useEffect, useState } from "react";
 let pathP1 = new Path2D();
-let run = true;
 let id = null;
-let a = 0;
+let a = 1;
 
 function App() {
   clearInterval(id);
@@ -12,13 +11,31 @@ function App() {
   let y = 250;
   let prevX = 250;
   let prevY = 250;
+  let movingLeft = false;
+  let movingRight = false;
   useEffect(() => {
-    const update = (e) => {
-      handleMovement(e.key);
+    const keydown = (e) => {
+      if (e.key == "ArrowRight") {
+        movingRight = true;
+      }
+      if (e.key == "ArrowLeft") {
+        movingLeft = true;
+      }
     };
-    window.addEventListener("keydown", update);
+    const keyup = (e) => {
+      if (e.key == "ArrowRight") {
+        movingRight = false;
+      }
+      if (e.key == "ArrowLeft") {
+        movingLeft = false;
+      }
+    };
+    window.addEventListener("keydown", keydown);
+    window.addEventListener("keyup", keyup);
+
     return () => {
-      window.removeEventListener("keydown", update);
+      window.removeEventListener("keydown", keydown);
+      window.removeEventListener("keyup", keyup);
     };
   });
   const draw = (ctx, frameCount) => {
@@ -30,43 +47,19 @@ function App() {
     ctx.stroke(pathP1);
   };
 
-  const handleMovement = (dir) => {
-    switch (dir) {
-      case "ArrowRight":
-        prevX = x;
-        prevY = y;
-        x += 10;
-        break;
-      case "ArrowLeft":
-        prevX = x;
-        prevY = y;
-        x -= 10;
-        break;
-      case "ArrowUp":
-        prevX = x;
-        prevY = y;
-        y -= 10;
-        break;
-      case "ArrowDown":
-        prevX = x;
-        prevY = y;
-        y += 10;
-        break;
-    }
-  };
-
   const move = () => {
     prevX = x;
     prevY = y;
-    a += 0.1;
-
-    let cx = 200;
-    let cy = 200;
-    let r = 100;
-    x = cx + r * Math.sin(a);
-    y = cy + r * Math.cos(a);
+    if (movingLeft) {
+      a -= 0.2;
+    }
+    if (movingRight) {
+      a += 0.2;
+    }
+    x += 4 * Math.cos(a);
+    y += 4 * Math.sin(a);
   };
-  id = setInterval(move, 100);
+  id = setInterval(move, 50);
 
   return <Canvas draw={draw} />;
 }
