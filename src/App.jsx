@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 let pathP1 = new Path2D();
 let id = null;
 let a = 1;
+let pathBuffer = [];
 
 function App() {
   clearInterval(id);
@@ -40,11 +41,20 @@ function App() {
   });
   const draw = (ctx, frameCount) => {
     ctx.lineWidth = 10;
-    ctx.strokeStyle = "blue";
+    let newPath = new Path2D();
+    if (ctx.isPointInStroke(pathP1, x, y)) {
+      ctx.strokeStyle = "red";
+    } else {
+      ctx.strokeStyle = "blue";
+    }
     ctx.lineCap = "round";
-    pathP1.moveTo(prevX, prevY);
-    pathP1.lineTo(x, y);
-    ctx.stroke(pathP1);
+    newPath.moveTo(prevX, prevY);
+    newPath.lineTo(x, y);
+    ctx.stroke(newPath);
+    pathBuffer.push(newPath);
+    if (pathBuffer.length >= 10) {
+      pathP1.addPath(pathBuffer.shift());
+    }
   };
 
   const move = () => {
