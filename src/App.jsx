@@ -17,6 +17,13 @@ function App() {
     pathBuffer: [],
   });
   let state = stateRef.current;
+  const colors = {
+    purple: "#9B5DE5",
+    pink: "#F15BB5",
+    yellow: "#FEE440",
+    blue: "#00BBF9",
+    green: "#00F5D4",
+  };
 
   useEffect(() => {
     const keydown = (e) => {
@@ -76,7 +83,7 @@ function App() {
     if (ctx.isPointInStroke(state.pathP1, state.x, state.y)) {
       ctx.strokeStyle = "red";
     } else {
-      ctx.strokeStyle = "blue";
+      ctx.strokeStyle = colors.green;
     }
     ctx.lineCap = "round";
     newPath.moveTo(state.prevX, state.prevY);
