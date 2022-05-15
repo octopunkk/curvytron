@@ -5,6 +5,13 @@ import { useEffect, useState, useRef } from "react";
 import "./App.css";
 
 function App() {
+  const colors = {
+    purple: "#9B5DE5",
+    pink: "#F15BB5",
+    yellow: "#FEE440",
+    blue: "#00BBF9",
+    green: "#00F5D4",
+  };
   let stateRef = useRef({
     x: 250,
     y: 250,
@@ -15,15 +22,9 @@ function App() {
     pathP1: new Path2D(),
     a: 1,
     pathBuffer: [],
+    colorP1: colors.purple,
   });
   let state = stateRef.current;
-  const colors = {
-    purple: "#9B5DE5",
-    pink: "#F15BB5",
-    yellow: "#FEE440",
-    blue: "#00BBF9",
-    green: "#00F5D4",
-  };
 
   useEffect(() => {
     const keydown = (e) => {
@@ -69,25 +70,18 @@ function App() {
       let newPath2 = new Path2D();
       newPath2.moveTo(state.prevX2, state.prevY2);
       newPath2.lineTo(state.x2, state.y2);
+      ctx.strokeStyle = state.colorP2;
       ctx.stroke(newPath2);
       state.pathBuffer2.push(newPath2);
       if (state.pathBuffer2.length >= 10) {
         state.pathP2.addPath(state.pathBuffer2.shift());
       }
-      if (ctx.isPointInStroke(state.pathP2, state.x2, state.y2)) {
-        console.log("coucou");
-      } else {
-        ctx.strokeStyle = "blue";
-      }
     }
-    if (ctx.isPointInStroke(state.pathP1, state.x, state.y)) {
-      ctx.strokeStyle = "red";
-    } else {
-      ctx.strokeStyle = colors.green;
-    }
+
     ctx.lineCap = "round";
     newPath.moveTo(state.prevX, state.prevY);
     newPath.lineTo(state.x, state.y);
+    ctx.strokeStyle = state.colorP1;
     ctx.stroke(newPath);
     state.pathBuffer.push(newPath);
     if (state.pathBuffer.length >= 10) {
@@ -138,11 +132,27 @@ function App() {
     state.pathP2 = new Path2D();
     state.a2 = 1;
     state.pathBuffer2 = [];
+    state.colorP2 = colors.green;
+  };
+
+  let pickColors = (color, player) => {
+    if (player == "P1") {
+      state.colorP1 = color;
+    }
+    if (player == "P2") {
+      state.colorP2 = color;
+    }
   };
 
   return (
     <div className="App">
-      <Header onStart={onStart} initPlayer2={initPlayer2} />
+      <Header
+        onStart={onStart}
+        initPlayer2={initPlayer2}
+        pickColors={pickColors}
+        colors={colors}
+        state={state}
+      />
       <Canvas draw={draw} />
     </div>
   );
