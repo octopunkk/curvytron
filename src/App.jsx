@@ -20,9 +20,11 @@ function App() {
     movingLeft: false,
     movingRight: false,
     pathP1: new Path2D(),
+    pathP2: new Path2D(),
     a: 1,
     pathBuffer: [],
     colorP1: colors.purple,
+    lostCount: 0,
   });
   let state = stateRef.current;
 
@@ -63,6 +65,16 @@ function App() {
       window.removeEventListener("keyup", keyup);
     };
   });
+  const intervalRef = useRef();
+
+  let onStart = () => {
+    if (!intervalRef.current) {
+      const id = setInterval(move, 50);
+      intervalRef.current = id;
+    }
+  };
+  let stopGame = () => clearInterval(intervalRef.current);
+
   const draw = (ctx, frameCount) => {
     ctx.lineWidth = 10;
     let newPath = new Path2D();
@@ -76,6 +88,22 @@ function App() {
       if (state.pathBuffer2.length >= 10) {
         state.pathP2.addPath(state.pathBuffer2.shift());
       }
+      if (ctx.isPointInStroke(state.pathP2, state.x2, state.y2)) {
+        if (intervalRef.current) {
+          state.lostCount2 += 1;
+          if (state.lostCount2 > 8) {
+            stopGame();
+          }
+        }
+      }
+      if (ctx.isPointInStroke(state.pathP1, state.x2, state.y2)) {
+        if (intervalRef.current) {
+          state.lostCount2 += 1;
+          if (state.lostCount2 > 8) {
+            stopGame();
+          }
+        }
+      }
     }
 
     ctx.lineCap = "round";
@@ -86,6 +114,22 @@ function App() {
     state.pathBuffer.push(newPath);
     if (state.pathBuffer.length >= 10) {
       state.pathP1.addPath(state.pathBuffer.shift());
+    }
+    if (ctx.isPointInStroke(state.pathP2, state.x, state.y)) {
+      if (intervalRef.current) {
+        state.lostCount += 1;
+        if (state.lostCount > 8) {
+          stopGame();
+        }
+      }
+    }
+    if (ctx.isPointInStroke(state.pathP1, state.x, state.y)) {
+      if (intervalRef.current) {
+        state.lostCount += 1;
+        if (state.lostCount > 8) {
+          stopGame();
+        }
+      }
     }
   };
 
@@ -114,14 +158,6 @@ function App() {
     }
   };
 
-  const intervalRef = useRef();
-
-  let onStart = () => {
-    if (!intervalRef.current) {
-      const id = setInterval(move, 50);
-      intervalRef.current = id;
-    }
-  };
   let initPlayer2 = () => {
     state.x2 = 350;
     state.y2 = 350;
@@ -133,6 +169,7 @@ function App() {
     state.a2 = 1;
     state.pathBuffer2 = [];
     state.colorP2 = colors.green;
+    state.lostCount2 = 0;
   };
 
   let pickColors = (color, player) => {
