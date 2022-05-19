@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
@@ -33,9 +32,7 @@ export let Header = (props) => {
         <Button variant="contained" onClick={props.onStart}>
           Start Game
         </Button>
-        <Button variant="contained" onClick={props.initPlayer2}>
-          Add player 2
-        </Button>
+
         <Button variant="contained" onClick={openDialog}>
           Pick colors
         </Button>
