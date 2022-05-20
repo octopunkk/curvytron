@@ -27,13 +27,28 @@ export let Header = (props) => {
       <div className="title">
         <h1>Curvytron</h1>
       </div>
+      <br />
 
       <div className="buttons">
-        <Button variant="contained" onClick={props.onStart}>
+        <Button
+          variant="contained"
+          onClick={props.onStart}
+          sx={{
+            backgroundColor: props.colors.red1,
+            ":hover": { backgroundColor: props.colors.darkred1 },
+          }}
+        >
           Start Game
         </Button>
 
-        <Button variant="contained" onClick={openDialog}>
+        <Button
+          variant="contained"
+          onClick={openDialog}
+          sx={{
+            backgroundColor: props.colors.red1,
+            ":hover": { backgroundColor: props.colors.darkred1 },
+          }}
+        >
           Pick colors
         </Button>
         <Dialog open={open} onClose={handleClose}>
@@ -83,7 +98,17 @@ export let Header = (props) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} autoFocus>
+            <Button
+              onClick={handleClose}
+              autoFocus
+              sx={{
+                color: props.colors.red1,
+                ":hover": {
+                  color: props.colors.darkred1,
+                  backgroundColor: "rgba(0, 0, 0, 0)",
+                },
+              }}
+            >
               Save
             </Button>
           </DialogActions>
