@@ -25,7 +25,7 @@ export let Header = (props) => {
   return (
     <div className="header">
       <div className="title">
-        <h1>Curvytron !!!</h1>
+        <h1>Curvytron</h1>
       </div>
 
       <div className="buttons">

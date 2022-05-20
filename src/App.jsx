@@ -8,6 +8,10 @@ import "./App.css";
 function App() {
   const [gameOver, setGameOver] = useState(false);
   const colors = {
+    green1: "#2a9d8f",
+    yellow1: "#e9c46a",
+    orange1: "#f4a261",
+    red1: "#e76f51",
     purple: "#9B5DE5",
     pink: "#F15BB5",
     yellow: "#FEE440",
