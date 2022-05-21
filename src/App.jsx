@@ -20,25 +20,15 @@ function App() {
     green: "#00F5D4",
   };
   let stateRef = useRef({
-    x: 250,
-    y: 250,
-    prevX: 250,
-    prevY: 250,
     movingLeft: false,
     movingRight: false,
     pathP1: new Path2D(),
     pathP2: new Path2D(),
-    a: 1,
     pathBuffer: [],
     colorP1: colors.purple,
     lostCount: 0,
-    x2: 350,
-    y2: 350,
-    prevX2: 350,
-    prevY2: 350,
     movingLeft2: false,
     movingRight2: false,
-    a2: 1,
     pathBuffer2: [],
     colorP2: colors.green,
     lostCount2: 0,
@@ -46,6 +36,20 @@ function App() {
     colorWinner: "",
   });
   let state = stateRef.current;
+
+  let pickRandomStart = () => {
+    state.x = Math.random() * 300 + 100;
+    state.prevX = state.x;
+    state.y = Math.random() * 300 + 100;
+    state.prevY = state.y;
+    state.x2 = Math.random() * 300 + 100;
+    state.prevX2 = state.x2;
+    state.y2 = Math.random() * 300 + 100;
+    state.prevY2 = state.y2;
+    state.a = Math.random() * 6.28;
+    state.a2 = Math.random() * 6.28;
+  };
+  useEffect(() => pickRandomStart(), []);
 
   useEffect(() => {
     const keydown = (e) => {
@@ -129,7 +133,16 @@ function App() {
         }
       }
     }
-
+    if (state.x <= 0 || state.x >= 500 || state.y <= 0 || state.y >= 500) {
+      state.winner = "Player 2";
+      state.colorWinner = state.colorP2;
+      stopGame();
+    }
+    if (state.x2 <= 0 || state.x2 >= 500 || state.y2 <= 0 || state.y2 >= 500) {
+      state.winner = "Player 1";
+      state.colorWinner = state.colorP1;
+      stopGame();
+    }
     ctx.lineCap = "round";
     newPath.moveTo(state.prevX, state.prevY);
     newPath.lineTo(state.x, state.y);
@@ -163,6 +176,7 @@ function App() {
   };
 
   const move = () => {
+    console.log(state.a);
     state.prevX = state.x;
     state.prevY = state.y;
     if (state.movingLeft) {
@@ -192,6 +206,24 @@ function App() {
       state.colorP2 = color;
     }
   };
+  let initNewGame = () => {
+    state.movingLeft = false;
+    state.movingRight = false;
+    state.pathP1 = new Path2D();
+    state.pathP2 = new Path2D();
+    state.pathBuffer = [];
+    state.lostCount = 0;
+    state.movingLeft2 = false;
+    state.movingRight2 = false;
+    state.pathBuffer2 = [];
+    state.lostCount2 = 0;
+    state.winner = "";
+    state.colorWinner = "";
+    pickRandomStart();
+    const id = setInterval(move, 50);
+    intervalRef.current = id;
+  };
+
   return (
     <div className="App">
       <Header
