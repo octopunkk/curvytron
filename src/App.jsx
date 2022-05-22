@@ -7,6 +7,8 @@ import "./App.css";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
+  const [arrow, setArrow] = useState(false);
+  const [rmArrow, setRmArrow] = useState(false);
   const colors = {
     green1: "#2a9d8f",
     yellow1: "#e9c46a",
@@ -51,6 +53,60 @@ function App() {
   });
   let state = stateRef.current;
 
+  let drawArrow = (ctx, player, color) => {
+    let fromx = player.x + 10 * Math.cos(player.a);
+    let tox = player.x + 40 * Math.cos(player.a);
+    let fromy = player.y + 10 * Math.sin(player.a);
+    let toy = player.y + 40 * Math.sin(player.a);
+    let arrowWidth = 3;
+    if (color == "black") {
+      arrowWidth = 5;
+    }
+
+    var headlen = 10;
+    var angle = Math.atan2(toy - fromy, tox - fromx);
+
+    ctx.save();
+    ctx.strokeStyle = color;
+
+    //starting path of the arrow from the start square to the end square
+    //and drawing the stroke
+    ctx.beginPath();
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+    ctx.lineWidth = arrowWidth;
+    ctx.stroke();
+
+    //starting a new path from the head of the arrow to one of the sides of
+    //the point
+    ctx.beginPath();
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(
+      tox - headlen * Math.cos(angle - Math.PI / 7),
+      toy - headlen * Math.sin(angle - Math.PI / 7)
+    );
+
+    //path from the side point of the arrow, to the other side point
+    ctx.lineTo(
+      tox - headlen * Math.cos(angle + Math.PI / 7),
+      toy - headlen * Math.sin(angle + Math.PI / 7)
+    );
+
+    //path from the side point back to the tip of the arrow, and then
+    //again to the opposite side point
+    ctx.lineTo(tox, toy);
+    ctx.lineTo(
+      tox - headlen * Math.cos(angle - Math.PI / 7),
+      toy - headlen * Math.sin(angle - Math.PI / 7)
+    );
+
+    //draws the paths created above
+    ctx.stroke();
+    ctx.restore();
+
+    setRmArrow(false);
+  };
+
   let pickRandomStart = () => {
     state.players.forEach((player, index) => {
       player.x = Math.random() * 300 + 100;
@@ -77,6 +133,7 @@ function App() {
         player.prevY = player.y;
       }
     });
+    setArrow(true);
   };
   useEffect(() => pickRandomStart(), []);
 
@@ -116,6 +173,7 @@ function App() {
       const id = setInterval(move, 50);
       intervalRef.current = id;
       setArrow(false);
+      setRmArrow(true);
     }
   };
   let stopGame = () => {
@@ -151,6 +209,12 @@ function App() {
     ctx.lineWidth = 10;
     ctx.lineCap = "round";
     state.players.forEach((player) => {
+      if (arrow) {
+        drawArrow(ctx, player, player.color);
+      }
+      if (rmArrow) {
+        drawArrow(ctx, player, "black");
+      }
       let newPath = new Path2D();
       newPath.moveTo(player.prevX, player.prevY);
       newPath.lineTo(player.x, player.y);
