@@ -59,7 +59,7 @@ function App() {
       player.prevY = player.y;
       player.a = Math.random() * 6.28;
       while (
-        state.players.forEach((player2, index2) => {
+        state.players.some((player2, index2) => {
           if (index2 < index) {
             if (
               Math.abs(player.x - player2.x) < 50 ||
@@ -123,13 +123,17 @@ function App() {
     clearInterval(intervalRef.current);
   };
   let hasLost = (ctx, player) => {
-    return state.players.some((player2) => {
+    return state.players.some((player2, index) => {
       if (
         ctx.isPointInStroke(player2.path, player.x, player.y) ||
         player.x <= 0 ||
         player.x >= 500 ||
         player.y <= 0 ||
-        player.y >= 500
+        player.y >= 500 ||
+        (player2.pathBuffer[5]
+          ? ctx.isPointInStroke(player2.pathBuffer[5], player.x, player.y) &&
+            index !== player.id
+          : false)
       ) {
         if (intervalRef.current) {
           player.lostCount += 1;
@@ -165,7 +169,6 @@ function App() {
           state.winner = "Player 1";
           state.colorWinner = state.players[0].color;
         }
-        console.log("heyyyy");
         stopGame();
       }
     });
