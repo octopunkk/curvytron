@@ -148,10 +148,10 @@ function App() {
   useEffect(() => {
     const keydown = (e) => {
       state.players.forEach((player) => {
-        if (e.key == player.rightKey) {
+        if (e.key == player.rightKey && state.runtime > 30) {
           player.movingRight = true;
         }
-        if (e.key == player.leftKey) {
+        if (e.key == player.leftKey && state.runtime > 30) {
           player.movingLeft = true;
         }
       });
