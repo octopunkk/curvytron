@@ -59,11 +59,12 @@ function App() {
     let fromy = player.y + 10 * Math.sin(player.a);
     let toy = player.y + 40 * Math.sin(player.a);
     let arrowWidth = 3;
-    if (color == "black") {
-      arrowWidth = 5;
+    var headlen = 10;
+    if (color == "rgb(15, 15, 15)") {
+      arrowWidth = 7;
+      headlen = 15;
     }
 
-    var headlen = 10;
     var angle = Math.atan2(toy - fromy, tox - fromx);
 
     ctx.save();
@@ -177,8 +178,6 @@ function App() {
     if (!intervalRef.current) {
       const id = setInterval(move, 50);
       intervalRef.current = id;
-      setArrow(false);
-      setRmArrow(true);
     }
   };
   let stopGame = () => {
@@ -199,7 +198,7 @@ function App() {
             index !== player.id
           : false)
       ) {
-        if (state.runtime > 5) {
+        if (state.runtime > 25) {
           player.hasLost = true;
           return true;
         }
@@ -216,7 +215,7 @@ function App() {
         drawArrow(ctx, player, player.color);
       }
       if (rmArrow) {
-        drawArrow(ctx, player, "black");
+        drawArrow(ctx, player, "rgb(15, 15, 15)");
       }
       if (cleanBoard) {
         cleaning(ctx);
@@ -246,19 +245,27 @@ function App() {
 
   const move = () => {
     state.runtime += 1;
-    console.log(state.runtime);
-    state.players.forEach((player) => {
-      player.prevX = player.x;
-      player.prevY = player.y;
-      if (player.movingLeft) {
-        player.a -= 0.2;
-      }
-      if (player.movingRight) {
-        player.a += 0.2;
-      }
-      player.x += 4 * Math.cos(player.a);
-      player.y += 4 * Math.sin(player.a);
-    });
+
+    if (state.runtime > 15) {
+      setArrow(false);
+      setRmArrow(true);
+
+      state.players.forEach((player) => {
+        player.prevX = player.x;
+        player.prevY = player.y;
+        if (player.movingLeft) {
+          player.a -= 0.2;
+        }
+        if (player.movingRight) {
+          player.a += 0.2;
+        }
+        player.x += 4 * Math.cos(player.a);
+        player.y += 4 * Math.sin(player.a);
+      });
+    }
+    if (state.runtime > 16) {
+      setRmArrow(false);
+    }
   };
 
   let pickColors = (playerId, color) => {
