@@ -4,12 +4,14 @@ import { Header } from "./Header";
 import { EndScreen } from "./EndScreen";
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
+import { Countdown } from "./Countdown";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
   const [arrow, setArrow] = useState(false);
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
+  const [countdown, setCountdown] = useState(null);
   const colors = {
     green1: "#2a9d8f",
     yellow1: "#e9c46a",
@@ -198,7 +200,7 @@ function App() {
             index !== player.id
           : false)
       ) {
-        if (state.runtime > 25) {
+        if (state.runtime > 45) {
           player.hasLost = true;
           return true;
         }
@@ -245,10 +247,20 @@ function App() {
 
   const move = () => {
     state.runtime += 1;
+    if (state.runtime > 0 && state.runtime < 10) {
+      setCountdown(3);
+    }
+    if (state.runtime > 10 && state.runtime < 20) {
+      setCountdown(2);
+    }
+    if (state.runtime > 20 && state.runtime < 30) {
+      setCountdown(1);
+    }
 
-    if (state.runtime > 15) {
+    if (state.runtime > 30) {
       setArrow(false);
       setRmArrow(true);
+      setCountdown(null);
 
       state.players.forEach((player) => {
         player.prevX = player.x;
@@ -263,7 +275,7 @@ function App() {
         player.y += 4 * Math.sin(player.a);
       });
     }
-    if (state.runtime > 16) {
+    if (state.runtime > 31) {
       setRmArrow(false);
     }
   };
@@ -298,7 +310,9 @@ function App() {
         colors={colors}
         state={state}
       />
+      <Countdown num={countdown} />
       <Canvas draw={draw} />
+
       {gameOver && (
         <EndScreen
           gameOver={gameOver}

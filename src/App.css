@@ -47,3 +47,10 @@ html {
   color: black;
   font-size: 20px;
 }
+.countdown {
+  position: absolute;
+  margin-top: auto;
+  text-align: center;
+  font-family: "Lobster", cursive;
+  color: white;
+}
