@@ -9,6 +9,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [arrow, setArrow] = useState(false);
   const [rmArrow, setRmArrow] = useState(false);
+  const [cleanBoard, setCleanBoard] = useState(false);
   const colors = {
     green1: "#2a9d8f",
     yellow1: "#e9c46a",
@@ -32,7 +33,6 @@ function App() {
         path: new Path2D(),
         pathBuffer: [],
         color: colors.purple,
-        lostCount: 0,
         hasLost: false,
       },
       {
@@ -44,12 +44,12 @@ function App() {
         path: new Path2D(),
         pathBuffer: [],
         color: colors.green,
-        lostCount: 0,
         hasLost: false,
       },
     ],
     winner: "",
     colorWinner: "",
+    runtime: 0,
   });
   let state = stateRef.current;
 
@@ -106,8 +106,13 @@ function App() {
 
     setRmArrow(false);
   };
+  let cleaning = (ctx) => {
+    ctx.clearRect(0, 0, 500, 500);
+    setCleanBoard(false);
+  };
 
   let pickRandomStart = () => {
+    setCleanBoard(true);
     state.players.forEach((player, index) => {
       player.x = Math.random() * 300 + 100;
       player.prevX = player.x;
@@ -179,6 +184,7 @@ function App() {
   let stopGame = () => {
     setGameOver(true);
     clearInterval(intervalRef.current);
+    intervalRef.current = null;
   };
   let hasLost = (ctx, player) => {
     return state.players.some((player2, index) => {
@@ -193,12 +199,9 @@ function App() {
             index !== player.id
           : false)
       ) {
-        if (intervalRef.current) {
-          player.lostCount += 1;
-          if (player.lostCount > 14) {
-            player.hasLost = true;
-            return true;
-          }
+        if (state.runtime > 5) {
+          player.hasLost = true;
+          return true;
         }
       }
       return false;
@@ -214,6 +217,9 @@ function App() {
       }
       if (rmArrow) {
         drawArrow(ctx, player, "black");
+      }
+      if (cleanBoard) {
+        cleaning(ctx);
       }
       let newPath = new Path2D();
       newPath.moveTo(player.prevX, player.prevY);
@@ -239,6 +245,8 @@ function App() {
   };
 
   const move = () => {
+    state.runtime += 1;
+    console.log(state.runtime);
     state.players.forEach((player) => {
       player.prevX = player.x;
       player.prevY = player.y;
@@ -253,23 +261,27 @@ function App() {
     });
   };
 
-  let pickColors = (color, player) => {
-    player.color = color;
+  let pickColors = (playerId, color) => {
+    state.players.forEach((player) => {
+      if (player.id == playerId) {
+        player.color = color;
+      }
+    });
   };
   let initNewGame = () => {
+    setGameOver(false);
     state.players.forEach((player) => {
       player.movingLeft = false;
       player.movingRight = false;
       player.path = new Path2D();
       player.pathBuffer = [];
-      player.lostCount = 0;
+      player.hasLost = false;
     });
-
+    state.runtime = 0;
     state.winner = "";
     state.colorWinner = "";
     pickRandomStart();
-    const id = setInterval(move, 50);
-    intervalRef.current = id;
+    onStart();
   };
   return (
     <div className="App">
