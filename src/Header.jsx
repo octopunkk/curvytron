@@ -10,6 +10,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
 
 export let Header = (props) => {
   const [open, setOpen] = useState(false);
@@ -17,6 +18,14 @@ export let Header = (props) => {
   const [colorsPicked, setColorsPicked] = useState(
     props.state.players.map((player) => player.color)
   );
+
+  let updateTournament = (e) => {
+    props.setTournament((prev) => {
+      let tnm = { ...prev };
+      tnm.numOfRounds = e.target.elements["numOfRounds"]?.value;
+      return tnm;
+    });
+  };
 
   let openDialog = () => setOpen(true);
   let openTournamentDialog = () => setOpenTournament(true);
@@ -33,15 +42,12 @@ export let Header = (props) => {
     });
     props.pickColors(playerId, color);
   };
-  let handleChange = (e) => {};
-
   return (
     <div className="header">
       <div className="title">
         <h1>Curvytron</h1>
       </div>
       <br />
-
       <div className="buttons">
         <Button
           variant="contained"
@@ -122,67 +128,76 @@ export let Header = (props) => {
         <Dialog open={openTournament} onClose={handleClose}>
           <DialogTitle id="alert-dialog-title">{"Edit Tournament"}</DialogTitle>
           <DialogContent>
-            <FormLabel id="roundsNumber">Number of rounds</FormLabel>
-            <RadioGroup row name="row-radio-buttons-group">
-              <FormControlLabel
-                value="5"
-                control={
-                  <Radio
-                    sx={{
-                      color: props.colors.red1,
-                      "&.Mui-checked": {
-                        color: props.colors.red1,
-                      },
-                    }}
-                  />
-                }
-                label="5"
-              />
-              <FormControlLabel
-                value="10"
-                control={
-                  <Radio
-                    sx={{
-                      color: props.colors.red1,
-                      "&.Mui-checked": {
-                        color: props.colors.red1,
-                      },
-                    }}
-                  />
-                }
-                label="10"
-              />
-              <FormControlLabel
-                value="15"
-                control={
-                  <Radio
-                    sx={{
-                      color: props.colors.red1,
-                      "&.Mui-checked": {
-                        color: props.colors.red1,
-                      },
-                    }}
-                  />
-                }
-                label="15"
-              />
-            </RadioGroup>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleClose}
-              autoFocus
-              sx={{
-                color: props.colors.red1,
-                ":hover": {
-                  color: props.colors.darkred1,
-                  backgroundColor: "rgba(0, 0, 0, 0)",
-                },
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateTournament(e);
+                handleClose();
               }}
             >
-              Save
-            </Button>
-          </DialogActions>
+              <FormControl>
+                <FormLabel id="roundsNumber">Number of rounds</FormLabel>
+                <RadioGroup row name="numOfRounds">
+                  <FormControlLabel
+                    value="5"
+                    control={
+                      <Radio
+                        sx={{
+                          color: props.colors.red1,
+                          "&.Mui-checked": {
+                            color: props.colors.red1,
+                          },
+                        }}
+                      />
+                    }
+                    label="5"
+                  />
+                  <FormControlLabel
+                    value="10"
+                    control={
+                      <Radio
+                        sx={{
+                          color: props.colors.red1,
+                          "&.Mui-checked": {
+                            color: props.colors.red1,
+                          },
+                        }}
+                      />
+                    }
+                    label="10"
+                  />
+                  <FormControlLabel
+                    value="15"
+                    control={
+                      <Radio
+                        sx={{
+                          color: props.colors.red1,
+                          "&.Mui-checked": {
+                            color: props.colors.red1,
+                          },
+                        }}
+                      />
+                    }
+                    label="15"
+                  />
+                </RadioGroup>
+                <Button
+                  onClick={handleClose}
+                  autoFocus
+                  sx={{
+                    color: props.colors.red1,
+                    ":hover": {
+                      color: props.colors.darkred1,
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                    },
+                  }}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </FormControl>
+            </form>
+          </DialogContent>
         </Dialog>
       </div>
     </div>

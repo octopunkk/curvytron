@@ -5,6 +5,7 @@ import { EndScreen } from "./EndScreen";
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Countdown } from "./Countdown";
+import { TournamentBar } from "./TournamentBar";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
@@ -13,6 +14,7 @@ function App() {
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
   const [countdown, setCountdown] = useState(null);
+
   const colors = {
     green1: "#2a9d8f",
     yellow1: "#e9c46a",
@@ -313,6 +315,7 @@ function App() {
         tournament={tournament}
         setTournament={setTournament}
       />
+      <TournamentBar tournament={tournament} />
       <Countdown num={countdown} />
       <Canvas draw={draw} />
 
