@@ -45,7 +45,7 @@ html {
   text-align: center;
   padding: 20px;
   color: black;
-  font-size: 20px;
+  font-size: 30px;
 }
 .countdown {
   position: absolute;
@@ -53,4 +53,9 @@ html {
   text-align: center;
   font-family: "Lobster", cursive;
   color: white;
+}
+
+.outline {
+  text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 }

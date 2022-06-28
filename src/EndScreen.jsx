@@ -21,10 +21,16 @@ export let EndScreen = (props) => {
         className="endScreen"
         style={{ backgroundColor: `${props.colorWinner}80` }}
       >
-        {props.winner} won this round !
+        <span style={{ fontFamily: "Lobster" }} className="outline">
+          {props.winner} won this round !
+        </span>
         <br />
         <br />
-        <Button onClick={handleClick}>Start new round</Button>
+        <Button onClick={handleClick} sx={{ color: "black" }}>
+          <p className="outline" style={{ fontWeight: "bold" }}>
+            Start new round
+          </p>
+        </Button>
       </div>
     )
   );

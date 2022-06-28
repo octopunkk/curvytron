@@ -8,6 +8,7 @@ import { Countdown } from "./Countdown";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
+  const [tournament, setTournament] = useState(false);
   const [arrow, setArrow] = useState(false);
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
@@ -34,7 +35,7 @@ function App() {
         movingRight: false,
         path: new Path2D(),
         pathBuffer: [],
-        color: colors.purple,
+        color: colors.green1,
         hasLost: false,
       },
       {
@@ -45,7 +46,7 @@ function App() {
         movingRight: false,
         path: new Path2D(),
         pathBuffer: [],
-        color: colors.green,
+        color: colors.yellow1,
         hasLost: false,
       },
     ],
@@ -309,6 +310,8 @@ function App() {
         pickColors={pickColors}
         colors={colors}
         state={state}
+        tournament={tournament}
+        setTournament={setTournament}
       />
       <Countdown num={countdown} />
       <Canvas draw={draw} />
