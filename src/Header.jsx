@@ -6,8 +6,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Box from "@mui/material/Box";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
 
 export let Header = (props) => {
   const [open, setOpen] = useState(false);
@@ -120,14 +122,51 @@ export let Header = (props) => {
         <Dialog open={openTournament} onClose={handleClose}>
           <DialogTitle id="alert-dialog-title">{"Edit Tournament"}</DialogTitle>
           <DialogContent>
-            Number of rounds
-            <br />
-            <br />
-            <ButtonGroup variant="text" aria-label="text button group">
-              <Button>4</Button>
-              <Button>8</Button>
-              <Button>16</Button>
-            </ButtonGroup>
+            <FormLabel id="roundsNumber">Number of rounds</FormLabel>
+            <RadioGroup row name="row-radio-buttons-group">
+              <FormControlLabel
+                value="5"
+                control={
+                  <Radio
+                    sx={{
+                      color: props.colors.red1,
+                      "&.Mui-checked": {
+                        color: props.colors.red1,
+                      },
+                    }}
+                  />
+                }
+                label="5"
+              />
+              <FormControlLabel
+                value="10"
+                control={
+                  <Radio
+                    sx={{
+                      color: props.colors.red1,
+                      "&.Mui-checked": {
+                        color: props.colors.red1,
+                      },
+                    }}
+                  />
+                }
+                label="10"
+              />
+              <FormControlLabel
+                value="15"
+                control={
+                  <Radio
+                    sx={{
+                      color: props.colors.red1,
+                      "&.Mui-checked": {
+                        color: props.colors.red1,
+                      },
+                    }}
+                  />
+                }
+                label="15"
+              />
+            </RadioGroup>
           </DialogContent>
           <DialogActions>
             <Button
