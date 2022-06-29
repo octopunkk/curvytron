@@ -9,7 +9,7 @@ import { TournamentBar } from "./TournamentBar";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
-  const [tournament, setTournament] = useState({ tnmIsOn: false });
+  const [tournament, setTournament] = useState({ isOn: false });
   const [arrow, setArrow] = useState(false);
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
@@ -59,6 +59,18 @@ function App() {
     runtime: 0,
   });
   let state = stateRef.current;
+
+  let resetTournament = () => {
+    state.players.forEach((player) => (player.winCount = 0));
+    tournament.isOver = false;
+    tournament.winner = "";
+  };
+  let stopTournament = () => {
+    state.players.forEach((player) => (player.winCount = 0));
+    tournament.isOver = false;
+    tournament.isOn = false;
+    tournament.winner = "";
+  };
 
   let drawArrow = (ctx, player, color) => {
     let fromx = player.x + 10 * Math.cos(player.a);
@@ -332,6 +344,8 @@ function App() {
 
       {gameOver && (
         <EndScreen
+          tournament={tournament}
+          resetTournament={resetTournament}
           gameOver={gameOver}
           winner={state.winner}
           colorWinner={state.colorWinner}

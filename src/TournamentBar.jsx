@@ -19,10 +19,11 @@ export let TournamentBar = (props) => {
   let middle = Math.floor(numOfRounds / 2);
 
   if (tnm[middle]) {
-    console.log("tournament won by " + tnm[middle]);
+    props.tournament.isOver = true;
+    props.tournament.winner = tnm[middle];
   }
   return (
-    props.tournament.tnmIsOn && (
+    props.tournament.isOn && (
       <div className="tournamentBar">
         {tnm.map((result, index) => {
           let size = 40;
