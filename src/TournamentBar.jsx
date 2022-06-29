@@ -5,7 +5,7 @@ import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
 export let TournamentBar = (props) => {
   let numOfRounds = props.tournament.numOfRounds;
   let p1Win = 1;
-  let p2Win = 7;
+  let p2Win = 1;
   let tnm = [];
   for (let i = 0; i < numOfRounds; i++) {
     tnm[i] = 0;
@@ -23,21 +23,37 @@ export let TournamentBar = (props) => {
   }
   return (
     <div className="tournamentBar">
-      {tnm.map((result, index) =>
-        result ? (
-          <CircleIcon
-            fontSize="large"
-            sx={{ color: "red" }}
-            key={index}
-          ></CircleIcon>
-        ) : (
-          <CircleTwoToneIcon
-            fontSize="large"
-            sx={{ color: "BurlyWood" }}
-            key={index}
-          ></CircleTwoToneIcon>
-        )
-      )}
+      {tnm.map((result, index) => {
+        let size = 40;
+        if (index == middle) {
+          size = 60;
+        }
+        if (result == "1") {
+          return (
+            <CircleIcon
+              sx={{ color: props.state.players[0].color, fontSize: size }}
+              key={index}
+            ></CircleIcon>
+          );
+        } else if (result == "2") {
+          return (
+            <CircleIcon
+              sx={{ color: props.state.players[1].color, fontSize: size }}
+              key={index}
+            ></CircleIcon>
+          );
+        } else if (result == "0") {
+          return (
+            <CircleTwoToneIcon
+              sx={{
+                color: "BurlyWood",
+                fontSize: size,
+              }}
+              key={index}
+            ></CircleTwoToneIcon>
+          );
+        }
+      })}
     </div>
   );
 };

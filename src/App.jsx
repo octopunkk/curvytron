@@ -315,7 +315,7 @@ function App() {
         tournament={tournament}
         setTournament={setTournament}
       />
-      <TournamentBar tournament={tournament} />
+      <TournamentBar tournament={tournament} state={state} />
       <Countdown num={countdown} />
       <Canvas draw={draw} />
 

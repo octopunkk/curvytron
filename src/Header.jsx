@@ -153,7 +153,7 @@ export let Header = (props) => {
                     label="5"
                   />
                   <FormControlLabel
-                    value="10"
+                    value="9"
                     control={
                       <Radio
                         sx={{
@@ -164,7 +164,7 @@ export let Header = (props) => {
                         }}
                       />
                     }
-                    label="10"
+                    label="9"
                   />
                   <FormControlLabel
                     value="15"
