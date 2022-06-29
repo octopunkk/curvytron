@@ -22,6 +22,7 @@ export let Header = (props) => {
   let updateTournament = (e) => {
     props.setTournament((prev) => {
       let tnm = { ...prev };
+      tnm.tnmIsOn = true;
       tnm.numOfRounds = e.target.elements["numOfRounds"]?.value;
       return tnm;
     });
@@ -59,7 +60,6 @@ export let Header = (props) => {
         >
           Start Game
         </Button>
-
         <Button
           variant="contained"
           onClick={openDialog}
@@ -78,7 +78,7 @@ export let Header = (props) => {
             ":hover": { backgroundColor: props.colors.darkred1 },
           }}
         >
-          {props.tournament ? "Edit Tournament" : "Create Tournament"}
+          {props.tournament.tnmIsOn ? "Edit Tournament" : "Create Tournament"}
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle id="alert-dialog-title">{"Select colors"}</DialogTitle>

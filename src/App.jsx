@@ -9,7 +9,7 @@ import { TournamentBar } from "./TournamentBar";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
-  const [tournament, setTournament] = useState(false);
+  const [tournament, setTournament] = useState({ tnmIsOn: false });
   const [arrow, setArrow] = useState(false);
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
@@ -39,6 +39,7 @@ function App() {
         pathBuffer: [],
         color: colors.green1,
         hasLost: false,
+        winCount: 0,
       },
       {
         id: 1,
@@ -50,6 +51,7 @@ function App() {
         pathBuffer: [],
         color: colors.yellow1,
         hasLost: false,
+        winCount: 0,
       },
     ],
     winner: "",
@@ -237,11 +239,19 @@ function App() {
       if (hasLost(ctx, player)) {
         // TODO : update to handle more players
         if (player.id == 0) {
-          state.winner = "Player 2";
-          state.colorWinner = state.players[1].color;
+          if (!state.increasedWinCountAlready) {
+            state.players[1].winCount += 1;
+            state.increasedWinCountAlready = true;
+            state.winner = "Player 2";
+            state.colorWinner = state.players[1].color;
+          }
         } else {
-          state.winner = "Player 1";
-          state.colorWinner = state.players[0].color;
+          if (!state.increasedWinCountAlready) {
+            state.players[0].winCount += 1;
+            state.increasedWinCountAlready = true;
+            state.winner = "Player 1";
+            state.colorWinner = state.players[0].color;
+          }
         }
         stopGame();
       }
@@ -302,6 +312,7 @@ function App() {
     state.runtime = 0;
     state.winner = "";
     state.colorWinner = "";
+    state.increasedWinCountAlready = false;
     pickRandomStart();
     onStart();
   };
