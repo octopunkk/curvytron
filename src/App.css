@@ -1,4 +1,5 @@
 #root,
+body,
 html {
   width: 100%;
   height: 100%;
@@ -62,4 +63,22 @@ html {
 
 .tournamentBar {
   font-size: 60px;
+}
+
+.ghIcon {
+  position: absolute;
+  left: 20px;
+}
+.signature {
+  box-sizing: border-box;
+  font-family: "Lobster", "sans-serif";
+  padding: 10px;
+  color: #e76f51;
+  text-align: center;
+  margin: auto;
+  width: 100%;
+}
+.filler {
+  flex-grow: 1;
+  height: 100%;
 }

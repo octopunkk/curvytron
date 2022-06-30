@@ -11,6 +11,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 export let Header = (props) => {
   const [open, setOpen] = useState(false);
@@ -43,9 +44,19 @@ export let Header = (props) => {
     });
     props.pickColors(playerId, color);
   };
+  const handleGitClick = () => {
+    window.open("https://github.com/octopunkk/curvytron");
+  };
   return (
     <div className="header">
       <div className="title">
+        <GitHubIcon
+          className="ghIcon"
+          fontSize="large"
+          sx={{ cursor: "pointer" }}
+          onClick={handleGitClick}
+        />
+
         <h1>Curvytron</h1>
       </div>
       <br />

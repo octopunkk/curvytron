@@ -65,12 +65,12 @@ function App() {
     tournament.isOver = false;
     tournament.winner = "";
   };
-  let stopTournament = () => {
-    state.players.forEach((player) => (player.winCount = 0));
-    tournament.isOver = false;
-    tournament.isOn = false;
-    tournament.winner = "";
-  };
+  // let stopTournament = () => {
+  //   state.players.forEach((player) => (player.winCount = 0));
+  //   tournament.isOver = false;
+  //   tournament.isOn = false;
+  //   tournament.winner = "";
+  // };
 
   let drawArrow = (ctx, player, color) => {
     let fromx = player.x + 10 * Math.cos(player.a);
@@ -328,6 +328,9 @@ function App() {
     pickRandomStart();
     onStart();
   };
+  let handleClickCurvython = () => {
+    window.open("http://www.curvytron.com/#/");
+  };
   return (
     <div className="App">
       <Header
@@ -352,6 +355,17 @@ function App() {
           initNewGame={initNewGame}
         />
       )}
+      <div className="filler"></div>
+      <p className="signature">Made with ❤️ by Anaïs</p>
+      <p className="signature">
+        Game idea stolen from{" "}
+        <span
+          onClick={handleClickCurvython}
+          style={{ cursor: "pointer", color: colors.darkred1 }}
+        >
+          Curvytron
+        </span>
+      </p>
     </div>
   );
 }

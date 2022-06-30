@@ -4,13 +4,13 @@ import Button from "@mui/material/Button";
 export let EndScreen = (props) => {
   const [open, setOpen] = React.useState(props.gameOver);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   const handleClick = () => {
     props.initNewGame();
     if (props.tournament.isOver) {
