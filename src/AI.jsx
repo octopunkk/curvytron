@@ -4,6 +4,7 @@ export let AI = (props) => {
   let state = props.state;
   let self = state.players[1];
   let opponent = state.players[0];
+  let precWDist;
 
   let stopTurning = (ms) => {
     setTimeout(() => {
@@ -17,11 +18,11 @@ export let AI = (props) => {
     let direction = Math.floor(Math.random() * 2);
     if (direction == 0) {
       self.movingLeft = true;
-      stopTurning(time * 700);
+      self.movingRight = false;
     }
     if (direction == 1) {
       self.movingRight = true;
-      stopTurning(time * 700);
+      self.movingLeft = false;
     }
   };
 
@@ -38,20 +39,29 @@ export let AI = (props) => {
   let avoidWall = () => {
     let wDist = wallDistance();
     if (wDist < 40) {
-      self.movingLeft = true;
-      self.movingRight = false;
-      if (wallDistance() < wDist) {
-        self.movingRight = true;
-        self.movingLeft = false;
+      if (wDist < precWDist) {
+        if (self.movingRight) {
+          self.movingLeft = true;
+          self.movingRight = false;
+        } else {
+          self.movingRight = true;
+          self.movingLeft = false;
+        }
       }
-      if (wallDistance() > wDist) {
-        self.movingLeft = true;
-        self.movingRight = false;
+      if (wDist > precWDist) {
+        if (self.movingLeft) {
+          self.movingLeft = true;
+          self.movingRight = false;
+        } else {
+          self.movingRight = true;
+          self.movingLeft = false;
+        }
       }
+      precWDist = wDist;
     } else {
       randomAction();
     }
   };
 
-  setInterval(avoidWall, 100);
+  setInterval(avoidWall, 50);
 };
