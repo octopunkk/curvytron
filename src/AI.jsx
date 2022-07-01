@@ -17,11 +17,11 @@ export let AI = (props) => {
     let direction = Math.floor(Math.random() * 2);
     if (direction == 0) {
       self.movingLeft = true;
-      stopTurning(time * 2000);
+      stopTurning(time * 700);
     }
     if (direction == 1) {
       self.movingRight = true;
-      stopTurning(time * 2000);
+      stopTurning(time * 700);
     }
   };
 
@@ -33,24 +33,25 @@ export let AI = (props) => {
     return Math.min(topWallDist, bottomWallDist, rightWallDist, leftWallDist);
   };
 
+  let distanceSelf = () => {};
+
   let avoidWall = () => {
     let wDist = wallDistance();
-    if (wDist < 90) {
-      console.log("ATTENTION");
+    if (wDist < 40) {
       self.movingLeft = true;
-      stopTurning(100);
+      self.movingRight = false;
       if (wallDistance() < wDist) {
         self.movingRight = true;
-        stopTurning(700);
+        self.movingLeft = false;
       }
       if (wallDistance() > wDist) {
         self.movingLeft = true;
-        stopTurning(700);
+        self.movingRight = false;
       }
     } else {
       randomAction();
     }
   };
 
-  setInterval(avoidWall, 700);
+  setInterval(avoidWall, 100);
 };
