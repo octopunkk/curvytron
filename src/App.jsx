@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Countdown } from "./Countdown";
 import { TournamentBar } from "./TournamentBar";
+import { AI } from "./AI";
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
@@ -14,6 +15,7 @@ function App() {
   const [rmArrow, setRmArrow] = useState(false);
   const [cleanBoard, setCleanBoard] = useState(false);
   const [countdown, setCountdown] = useState(null);
+  const [AImode, setAImode] = useState(false);
 
   const colors = {
     green1: "#2a9d8f",
@@ -71,7 +73,9 @@ function App() {
   //   tournament.isOn = false;
   //   tournament.winner = "";
   // };
-
+  let toggleAI = () => {
+    setAImode((prev) => !prev);
+  };
   let drawArrow = (ctx, player, color) => {
     let fromx = player.x + 10 * Math.cos(player.a);
     let tox = player.x + 40 * Math.cos(player.a);
@@ -331,6 +335,7 @@ function App() {
   let handleClickCurvython = () => {
     window.open("http://www.curvytron.com/#/");
   };
+
   return (
     <div className="App">
       <Header
@@ -340,8 +345,11 @@ function App() {
         state={state}
         tournament={tournament}
         setTournament={setTournament}
+        toggleAI={toggleAI}
+        AImode={AImode}
       />
       <TournamentBar tournament={tournament} state={state} />
+      {AImode && state.runtime > 30 && <AI state={state} />}
       <Countdown num={countdown} />
       <Canvas draw={draw} />
 

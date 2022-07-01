@@ -76,6 +76,16 @@ export let Header = (props) => {
         </Button>
         <Button
           variant="contained"
+          onClick={props.toggleAI}
+          sx={{
+            backgroundColor: props.colors.red1,
+            ":hover": { backgroundColor: props.colors.darkred1 },
+          }}
+        >
+          {props.AImode ? "turn AI off" : "turn AI on"}
+        </Button>
+        <Button
+          variant="contained"
           onClick={openDialog}
           sx={{
             backgroundColor: props.colors.red1,
