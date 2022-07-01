@@ -34,15 +34,15 @@ export let AI = (props) => {
   };
   let precWDist = wallDistance();
 
-  let distanceSelf = () => {};
-
-  let avoidWall = () => {
+  let avoidStuff = () => {
     let wDist = wallDistance();
-    if (wDist < 70) {
-      if (Math.abs(wDist - precWDist) < 5) {
-        self.movingLeft = true;
-        self.movingRight = false;
-      } else if (wDist < precWDist) {
+    console.log(wDist);
+    if (wDist < 30) {
+      // if (Math.abs(wDist - precWDist) < 1) {
+      //   self.movingLeft = true;
+      //   self.movingRight = false;
+      // } else
+      if (wDist < precWDist) {
         if (self.movingRight) {
           self.movingLeft = true;
           self.movingRight = false;
@@ -60,10 +60,16 @@ export let AI = (props) => {
         }
       }
       precWDist = wDist;
-    } else {
-      randomAction();
+    } else if (self.danger) {
+      if (self.movingRight) {
+        self.movingLeft = true;
+        self.movingRight = false;
+      } else {
+        self.movingRight = true;
+        self.movingLeft = false;
+      }
     }
   };
 
-  setInterval(avoidWall, 50);
+  setInterval(avoidStuff, 200);
 };

@@ -42,6 +42,7 @@ function App() {
         color: colors.green1,
         hasLost: false,
         winCount: 0,
+        danger: false,
       },
       {
         id: 1,
@@ -54,6 +55,7 @@ function App() {
         color: colors.yellow1,
         hasLost: false,
         winCount: 0,
+        danger: false,
       },
     ],
     winner: "",
@@ -230,9 +232,30 @@ function App() {
     });
   };
 
+  // For the AI !
+  let isCloseToSomeone = (ctx, player) => {
+    return state.players.some((player2, index) => {
+      if (
+        ctx.isPointInStroke(player2.path, player.x + 30, player.y) ||
+        ctx.isPointInStroke(player2.path, player.x, player.y + 30) ||
+        ctx.isPointInStroke(player2.path, player.x + 20, player.y + 20) ||
+        ctx.isPointInStroke(player2.path, player.x + 10, player.y) ||
+        ctx.isPointInStroke(player2.path, player.x, player.y + 10) ||
+        ctx.isPointInStroke(player2.path, player.x + 5, player.y + 5)
+      ) {
+        return true;
+      }
+      return false;
+    });
+  };
+
   const draw = (ctx, frameCount) => {
     ctx.lineWidth = 10;
     ctx.lineCap = "round";
+    if (AImode) {
+      state.players[1].danger = isCloseToSomeone(ctx, state.players[1]);
+    }
+
     state.players.forEach((player) => {
       if (arrow) {
         drawArrow(ctx, player, player.color);
@@ -252,6 +275,7 @@ function App() {
       if (player.pathBuffer.length >= 10) {
         player.path.addPath(player.pathBuffer.shift());
       }
+
       if (hasLost(ctx, player)) {
         // TODO : update to handle more players
         if (player.id == 0) {
