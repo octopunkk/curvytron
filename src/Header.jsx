@@ -15,6 +15,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 
 export let Header = (props) => {
   const [open, setOpen] = useState(false);
+  const [openHelp, setOpenHelp] = useState(false);
   const [openTournament, setOpenTournament] = useState(false);
   const [colorsPicked, setColorsPicked] = useState(
     props.state.players.map((player) => player.color)
@@ -31,10 +32,12 @@ export let Header = (props) => {
 
   let openDialog = () => setOpen(true);
   let openTournamentDialog = () => setOpenTournament(true);
+  let openHelpDialog = () => setOpenHelp(true);
 
   let handleClose = () => {
     setOpen(false);
     setOpenTournament(false);
+    setOpenHelp(false);
   };
   let handleClick = (playerId, color) => (e) => {
     setColorsPicked((prev) => {
@@ -90,6 +93,16 @@ export let Header = (props) => {
           }}
         >
           {props.tournament.isOn ? "Edit Tournament" : "Create Tournament"}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={openHelpDialog}
+          sx={{
+            backgroundColor: props.colors.red1,
+            ":hover": { backgroundColor: props.colors.darkred1 },
+          }}
+        >
+          Help
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle id="alert-dialog-title">{"Select colors"}</DialogTitle>
@@ -209,6 +222,40 @@ export let Header = (props) => {
               </FormControl>
             </form>
           </DialogContent>
+        </Dialog>
+        <Dialog open={openHelp} onClose={handleClose}>
+          <DialogTitle id="alert-dialog-title">{"How to play ?"}</DialogTitle>
+          <DialogContent>
+            <h3>Rules</h3>
+            <p>Survive longer than your opponent !</p>
+            <p>You can only turn left or right, and you're always moving.</p>
+            <p>
+              Don't hit your line, your opponent's line or the borders of the
+              game, or you're dead !
+            </p>
+            <h3>Commands</h3>
+            <p>Player 1 : LEFT and RIGHT arrow keys</p>
+            <p>Player 2 : A and D keys</p>
+            <h3>Encounter a bug ?</h3>
+            <p>Tell me ! </p>
+            <p>Either on github (logo on the top left corner) </p>
+            <p>or per mail : hello@anaisderue.com </p>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              autoFocus
+              sx={{
+                color: props.colors.red1,
+                ":hover": {
+                  color: props.colors.darkred1,
+                  backgroundColor: "rgba(0, 0, 0, 0)",
+                },
+              }}
+            >
+              Got it !
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     </div>
