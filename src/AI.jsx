@@ -4,7 +4,6 @@ export let AI = (props) => {
   let state = props.state;
   let self = state.players[1];
   let opponent = state.players[0];
-  let precWDist;
 
   let stopTurning = (ms) => {
     setTimeout(() => {
@@ -33,13 +32,17 @@ export let AI = (props) => {
     let leftWallDist = self.x;
     return Math.min(topWallDist, bottomWallDist, rightWallDist, leftWallDist);
   };
+  let precWDist = wallDistance();
 
   let distanceSelf = () => {};
 
   let avoidWall = () => {
     let wDist = wallDistance();
-    if (wDist < 40) {
-      if (wDist < precWDist) {
+    if (wDist < 70) {
+      if (Math.abs(wDist - precWDist) < 5) {
+        self.movingLeft = true;
+        self.movingRight = false;
+      } else if (wDist < precWDist) {
         if (self.movingRight) {
           self.movingLeft = true;
           self.movingRight = false;
@@ -47,8 +50,7 @@ export let AI = (props) => {
           self.movingRight = true;
           self.movingLeft = false;
         }
-      }
-      if (wDist > precWDist) {
+      } else if (wDist > precWDist) {
         if (self.movingLeft) {
           self.movingLeft = true;
           self.movingRight = false;
